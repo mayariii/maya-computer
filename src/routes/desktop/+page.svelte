@@ -35,7 +35,7 @@
 	}
 
 	function toggleScreensaver() {
-		goto("/screensaver");
+		goto('/screensaver');
 	}
 
 	// Format time as "h:mm AM/PM"
@@ -97,6 +97,7 @@
 	<div
 		class="flex h-[40px] w-full items-center justify-between bg-gradient-to-b from-[#255c8f] to-[#214c75] px-2 shadow-lg"
 	>
+		<p class="font-departure text-xs text-white tracking-widest">MAYA.COMPUTER</p>
 		<div class="flex gap-1">
 			{#if showPaint}
 				<TaskbarButton icon={paintIcon} title="Paint" isActive={true} onClick={openPaint} />
@@ -116,16 +117,18 @@
 			{/if}
 		</div>
 
-		<button 
-			onclick={toggleScreensaver}
-			class="flex items-center px-2 text-white text-shadow hover:bg-white/10"
-		>
-			<span class="text-xs">Screen Saver</span>
-		</button>
+		<div class="flex items-center gap-2">
+			<button
+				onclick={toggleScreensaver}
+				class="text-shadow flex items-center px-2 text-white hover:bg-white/10"
+			>
+				<span class="font-departure text-[11px] tracking-widest">SCREENSAVER</span>
+			</button>
 
-		<!-- Clock -->
-		<div class="flex items-center px-2 text-white text-shadow">
-			{formattedTime}
+			<!-- Clock -->
+			<div class="text-shadow flex items-center px-2 text-white">
+				{formattedTime}
+			</div>
 		</div>
 	</div>
 </div>
