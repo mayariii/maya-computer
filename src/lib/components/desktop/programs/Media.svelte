@@ -31,7 +31,7 @@
 <div class="win7-elements">
 	<Window
 		title="Media Player"
-		initialX={80}
+		initialX={20}
 		initialY={10}
 		maxWidth="500px"
 		maxHeight="1200px"
@@ -60,7 +60,7 @@
 			<video
 				bind:this={video}
 				loop
-				class="absolute inset-y-0 top-32 h-fit w-[280px] rounded-[50px]"
+				class="absolute inset-y-0 top-[130px] h-[240px] w-[230px] rounded-[80px] sm:h-[200px] sm:w-fit sm:rounded-[50px]"
 			>
 				<source
 					src="https://firebasestorage.googleapis.com/v0/b/mayari-io.appspot.com/o/maya-computer%2FScreen%20Recording%202025-01-10%20at%2021.44.44.mov?alt=media&token=64bdc29a-9508-420a-85ad-b917985ce15a"

@@ -7,12 +7,15 @@
 	import Paint from '$lib/components/desktop/programs/Paint.svelte';
 	import Messenger from '$lib/components/desktop/programs/Messenger.svelte';
 	import Media from '$lib/components/desktop/programs/Media.svelte';
+	import Screensaver from '$lib/components/desktop/Screensaver.svelte';
+	import { goto } from '$app/navigation';
 
 	let time = $state(new Date());
 	let showPaint = $state(false);
 	let showMessenger = $state(false);
 	let showMedia = $state(false);
-	
+	let showScreensaver = $state(false);
+
 	function openPaint() {
 		if (!showPaint) {
 			showPaint = true;
@@ -29,6 +32,10 @@
 		if (!showMedia) {
 			showMedia = true;
 		}
+	}
+
+	function toggleScreensaver() {
+		goto("/screensaver");
 	}
 
 	// Format time as "h:mm AM/PM"
@@ -90,19 +97,6 @@
 	<div
 		class="flex h-[40px] w-full items-center justify-between bg-gradient-to-b from-[#255c8f] to-[#214c75] px-2 shadow-lg"
 	>
-		<button
-			class="flex h-[30px] items-center rounded-sm bg-gradient-to-b from-[#407096] to-[#2d5c84] px-2 hover:from-[#4c82ac] hover:to-[#356a98]"
-		>
-			<svg class="mr-1 h-[20px] w-[20px]" viewBox="0 0 24 24">
-				<path
-					fill="currentColor"
-					class="text-white"
-					d="M 2 3 L 10 2 L 10 11 L 2 11 L 2 3 Z M 12 2 L 22 1 L 22 11 L 12 11 L 12 2 Z M 2 13 L 10 13 L 10 22 L 2 21 L 2 13 Z M 12 13 L 22 13 L 22 23 L 12 22 L 12 13 Z"
-				/>
-			</svg>
-			<span class="text-shadow text-white">Start</span>
-		</button>
-
 		<div class="flex gap-1">
 			{#if showPaint}
 				<TaskbarButton icon={paintIcon} title="Paint" isActive={true} onClick={openPaint} />
@@ -116,6 +110,22 @@
 					onClick={openMessenger}
 				/>
 			{/if}
+
+			{#if showMedia}
+				<TaskbarButton icon={mediaIcon} title="Media" isActive={true} onClick={openMedia} />
+			{/if}
+		</div>
+
+		<button 
+			onclick={toggleScreensaver}
+			class="flex items-center px-2 text-white text-shadow hover:bg-white/10"
+		>
+			<span class="text-xs">Screen Saver</span>
+		</button>
+
+		<!-- Clock -->
+		<div class="flex items-center px-2 text-white text-shadow">
+			{formattedTime}
 		</div>
 	</div>
 </div>

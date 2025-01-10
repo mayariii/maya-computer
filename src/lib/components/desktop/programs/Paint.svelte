@@ -14,7 +14,7 @@
 <div class="win7-elements">
 	<Window
 		title="Paint"
-		initialX={80}
+		initialX={20}
 		initialY={10}
 		maxWidth="900px"
 		maxHeight="1200px"

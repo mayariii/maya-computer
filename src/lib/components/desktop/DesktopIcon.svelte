@@ -6,14 +6,14 @@
 
 <button
   on:click={onClick}
-  class="flex flex-col items-center w-[75px] p-2 rounded  focus:bg-white/20"
+  class="flex flex-col items-center w-[75px] p-3 rounded  focus:bg-white/20"
 >
   <img
     src={icon}
     alt={label}
     class="w-8 h-8 mb-1"
   />
-  <span class="text-white text-sm text-center break-words text-shadow">
+  <span class="text-white text-xs text-center break-words text-shadow font-departure">
     {label}
   </span>
 </button>

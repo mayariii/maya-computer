@@ -45,8 +45,6 @@
 		line-height: initial !important;
 		text-align: initial !important;
 		vertical-align: initial !important;
-		display: initial !important;
-		position: initial !important;
 
 	}
 
