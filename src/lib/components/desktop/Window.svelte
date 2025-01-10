@@ -5,12 +5,13 @@
     title = "Window", 
     maxWidth = "300px", 
     maxHeight = "500px",
+    minWidth = "280px",
     children,
     initialX = 50,
     initialY = 50,
     zIndex = 0,
     onClose,
-    hasSpace = false
+    hasSpace = false,
   } = $props();
   
   let isDragging = $state(false);
@@ -26,6 +27,8 @@
     width: '',
     height: ''
   });
+
+  let isShaking = $state(false);
 
   function handleMouseDown(event: MouseEvent) {
     isDragging = true;
@@ -43,15 +46,7 @@
     let newY = event.clientY - offset.y;
     
     // Get window and desktop dimensions
-    const windowRect = windowRef?.getBoundingClientRect();
-    const desktopRect = document.querySelector('.desktop-area')?.getBoundingClientRect();
-    
-    if (windowRect && desktopRect) {
-      // Bound checking
-      newX = Math.max(-20, Math.min(newX, desktopRect.width - windowRect.width + 20));
-      newY = Math.max(0, Math.min(newY, desktopRect.height - windowRect.height));
-    }
-    
+
     position.x = newX;
     position.y = newY;
   }
@@ -97,6 +92,14 @@
     }
   }
 
+  export function shake() {
+    if (isShaking) return;
+    isShaking = true;
+    setTimeout(() => {
+      isShaking = false;
+    }, 1000);
+  }
+
   $effect(() => {
     if (isDragging) {
       window.addEventListener('mousemove', handleMouseMove);
@@ -110,29 +113,54 @@
   });
 </script>
 
-	<div
-		bind:this={windowRef}
-		class="window active absolute glass"
-		transition:fade={{ duration: 150 }}
-		style="
-    max-width: {isMaximized ? '100%' : maxWidth}; 
-    max-height: {isMaximized ? '100%' : maxHeight};
-    width: {isMaximized ? '100%' : 'auto'};
-    height: {isMaximized ? '100%' : 'auto'};
-    transform: translate({position.x}px, {position.y}px);
-    z-index: {currentZIndex};
-    --window-background-color: #805ba5;
-  "
-	>
-		<div class="title-bar cursor-move" onmousedown={handleMouseDown} role="toolbar" tabindex="0">
-			<div class="title-bar-text select-none">{title}</div>
-			<div class="title-bar-controls">
-				<!-- <button aria-label="Minimize"></button> -->
-				<button aria-label="Maximize" onclick={handleMaximize}></button>
-				<button aria-label="Close" onclick={onClose}></button>
-			</div>
-		</div>
-		<div class="window-body" class:has-space={hasSpace} style="overflow-y: auto;">
-			{@render children()}
-		</div>
-	</div>
+  <div
+    bind:this={windowRef}
+    class="window active glass"
+    class:shaking={isShaking}
+    transition:fade={{ duration: 150 }}
+    style="
+      max-width: {isMaximized ? '100%' : maxWidth}; 
+      max-height: {isMaximized ? '100%' : maxHeight};
+      min-width: {minWidth};
+      width: {isMaximized ? '100%' : 'clamp(' + minWidth + ', 90vw, ' + maxWidth + ')'};
+      height: {isMaximized ? '100%' : 'auto'};
+      transform: translate({position.x}px, {position.y}px);
+      z-index: {currentZIndex};
+      --window-background-color: #805ba5;
+    "
+  >
+    <div class="title-bar cursor-move" onmousedown={handleMouseDown} role="toolbar" tabindex="0">
+      <div class="title-bar-text select-none">{title}</div>
+      <div class="title-bar-controls">
+        <button aria-label="Close" onclick={onClose}></button>
+      </div>
+    </div>
+    <div class="window-body" class:has-space={hasSpace} style="overflow-y: auto;">
+      {@render children()}
+    </div>
+  </div>
+
+
+  <style lang="postcss">
+    .shaking {
+      animation: shake 1s cubic-bezier(.36,.07,.19,.97) both;
+    }
+  
+    @keyframes shake {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      20% {
+        transform: translateX(-10px);
+      }
+      40% {
+        transform: translateX(10px);
+      }
+      60% {
+        transform: translateX(-10px);
+      }
+      80% {
+        transform: translateX(10px);
+      }
+    }
+  </style>

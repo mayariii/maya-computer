@@ -5,6 +5,8 @@
 	let { children } = $props();
 </script>
 
+
+
 <div class="h-dvh w-screen bg-neutral-900">
 	{@render children()}
 </div>
@@ -25,5 +27,28 @@
 		box-shadow: initial;
 	}
 
-	/* Add more specific overrides as needed */
+	:global(.no-win7) {
+		/* Reset all Win7 styles for elements with this class */
+		background: initial !important;
+		border: initial !important;
+		box-shadow: initial !important;
+		border-radius: initial !important;
+		padding: initial !important;
+		margin: initial !important;
+		color: initial !important;
+		width: initial !important;
+		height: initial !important;
+		min-width: initial !important;
+		min-height: initial !important;
+		max-width: initial !important;
+		max-height: initial !important;
+		line-height: initial !important;
+		text-align: initial !important;
+		vertical-align: initial !important;
+		display: initial !important;
+		position: initial !important;
+
+	}
+
+	
 </style>

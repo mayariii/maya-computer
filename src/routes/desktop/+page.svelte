@@ -1,10 +1,35 @@
 <script lang="ts">
-	import Window from '$lib/components/desktop/Window.svelte';
 	import DesktopIcon from '$lib/components/desktop/DesktopIcon.svelte';
+	import TaskbarButton from '$lib/components/desktop/TaskbarButton.svelte';
 	import paintIcon from '$lib/assets/icons/paint.ico';
+	import messengerIcon from '$lib/assets/icons/messenger.ico';
+	import mediaIcon from '$lib/assets/icons/headphones.ico';
+	import Paint from '$lib/components/desktop/programs/Paint.svelte';
+	import Messenger from '$lib/components/desktop/programs/Messenger.svelte';
+	import Media from '$lib/components/desktop/programs/Media.svelte';
 
 	let time = $state(new Date());
 	let showPaint = $state(false);
+	let showMessenger = $state(false);
+	let showMedia = $state(false);
+	
+	function openPaint() {
+		if (!showPaint) {
+			showPaint = true;
+		}
+	}
+
+	function openMessenger() {
+		if (!showMessenger) {
+			showMessenger = true;
+		}
+	}
+
+	function openMedia() {
+		if (!showMedia) {
+			showMedia = true;
+		}
+	}
 
 	// Format time as "h:mm AM/PM"
 	let formattedTime = $derived(
@@ -28,74 +53,42 @@
 			if (intervalId) clearInterval(intervalId);
 		};
 	});
-
-	function handlePaintClick() {
-		showPaint = true;
-	}
-
-	function handlePaintClose() {
-		showPaint = false;
-		isPaintLoading = true;
-	}
-
-	let isPaintLoading = $state(true);
-
-	function handlePaintLoad() {
-		isPaintLoading = false;
-		if (intervalId) clearInterval(intervalId);
-	}
 </script>
 
-<div class="relative flex h-screen w-full flex-col bg-[#1d80ce]">
-	<!-- Main desktop area -->
-	<div class="desktop-area flex-1 p-4">
-		<!-- Non-Win7 styled elements -->
-		<DesktopIcon icon={paintIcon} label="Paint" onClick={handlePaintClick} />
-
+<div class="relative flex max-h-screen min-h-screen w-full flex-col bg-[#1d80ce]">
+	<!-- Program windows layer -->
+	<div class="pointer-events-none absolute inset-0 z-10">
 		{#if showPaint}
-			<!-- Win7 styled elements -->
-			<div class="win7-elements">
-				<Window
-					title="Paint"
-					initialX={50}
-					initialY={50}
-					zIndex={0}
-					maxWidth="900px"
-					maxHeight="1200px"
-					onClose={handlePaintClose}
-				>
-					<div class="relative h-[600px] w-full">
-						{#if isPaintLoading}
-							<div class="absolute inset-0 flex items-center justify-center bg-[#f0f0f0]">
-								<div class="flex w-[300px] flex-col gap-3 text-center">
-									<img src={paintIcon} alt="Paint" class="mx-auto mb-2 h-12 w-12" />
-									<div
-										role="progressbar"
-										class="marquee"
-										aria-valuemin="0"
-										aria-valuemax="100"
-									>
-									</div>
-								</div>
-							</div>
-						{/if}
-						<iframe
-							src="https://jspaint.app#theme:modern.css"
-							id="jspaint-iframe"
-							width="100%"
-							height="100%"
-							title="Paint"
-							onload={handlePaintLoad}
-						></iframe>
-					</div>
-				</Window>
+			<div class="pointer-events-auto">
+				<Paint onClose={() => (showPaint = false)} />
+			</div>
+		{/if}
+
+		{#if showMessenger}
+			<div class="pointer-events-auto">
+				<Messenger onClose={() => (showMessenger = false)} />
+			</div>
+		{/if}
+
+		{#if showMedia}
+			<div class="pointer-events-auto">
+				<Media onClose={() => (showMedia = false)} />
 			</div>
 		{/if}
 	</div>
 
-	<!-- Non-Win7 styled taskbar -->
+	<!-- Desktop icons layer -->
+	<div class="relative z-0 flex-grow">
+		<div class="flex flex-col gap-2 p-4">
+			<DesktopIcon icon={messengerIcon} label="Messenger" onClick={openMessenger} />
+			<DesktopIcon icon={paintIcon} label="Paint" onClick={openPaint} />
+			<DesktopIcon icon={mediaIcon} label="Media" onClick={openMedia} />
+		</div>
+	</div>
+
+	<!-- Taskbar -->
 	<div
-		class="flex h-[40px] w-full items-center bg-gradient-to-b from-[#255c8f] to-[#214c75] px-2 shadow-lg"
+		class="flex h-[40px] w-full items-center justify-between bg-gradient-to-b from-[#255c8f] to-[#214c75] px-2 shadow-lg"
 	>
 		<button
 			class="flex h-[30px] items-center rounded-sm bg-gradient-to-b from-[#407096] to-[#2d5c84] px-2 hover:from-[#4c82ac] hover:to-[#356a98]"
@@ -109,6 +102,21 @@
 			</svg>
 			<span class="text-shadow text-white">Start</span>
 		</button>
+
+		<div class="flex gap-1">
+			{#if showPaint}
+				<TaskbarButton icon={paintIcon} title="Paint" isActive={true} onClick={openPaint} />
+			{/if}
+
+			{#if showMessenger}
+				<TaskbarButton
+					icon={messengerIcon}
+					title="Messenger"
+					isActive={true}
+					onClick={openMessenger}
+				/>
+			{/if}
+		</div>
 	</div>
 </div>
 
