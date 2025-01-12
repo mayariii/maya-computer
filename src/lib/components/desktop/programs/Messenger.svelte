@@ -43,7 +43,7 @@
 
 			<div class="bg-violet-100 p-2">
 				<button class="no-win7 flex items-center gap-2 bg-indigo-600 p-4" onclick={playNudgeSound}>
-					<img src={Nudge} alt="Messenger" class="w-4 h-4" />
+					<img src={Nudge} alt="Messenger" class="h-4 w-4" />
 					<span class="font-departure text-xs">Nudge</span>
 				</button>
 			</div>
