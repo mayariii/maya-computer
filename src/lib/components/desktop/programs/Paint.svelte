@@ -12,14 +12,7 @@
 </script>
 
 <div class="win7-elements">
-	<Window
-		title="Paint"
-		initialX={20}
-		initialY={10}
-		maxWidth="900px"
-		maxHeight="1200px"
-		{onClose}
-	>
+	<Window title="Paint" initialX={20} initialY={10} maxWidth="900px" maxHeight="1200px" {onClose}>
 		<div class="relative h-[600px] w-full">
 			{#if isPaintLoading}
 				<div class="absolute inset-0 flex items-center justify-center bg-[#f0f0f0]">
